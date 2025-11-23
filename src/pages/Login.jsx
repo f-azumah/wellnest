@@ -1,6 +1,7 @@
 // page wrapper/layout
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function MyComponent(){
     return (
@@ -10,9 +11,12 @@ function MyComponent(){
 }
 
 function Login(){
+    const navigate = useNavigate();
+
     function handleSubmit(e) {
         e.preventDefault();
         console.log("form submitted");
+        navigate("/dashboard");
     }
 
     return(
