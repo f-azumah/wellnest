@@ -26,7 +26,7 @@ function CreateAccount(){
                 </form>
                 <hr className=" border-gray-300 dark:border-gray-600 my-10 w-80"></hr>
 
-            <p className="mt-4 font-serif">Already have an account? <Link to="/login" className="underline-offset-1 text-lime-700 dark:text-lime-700 font-serif">Login</Link></p>
+            <p className="mt-4 font-serif">Already have an account? <Link to="/login" className="underline-offset-1 text-lime-700 dark:text-lime-700 font-serif hover:text-lime-900">Login</Link></p>
             </div>
 
         </div>

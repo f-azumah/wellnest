@@ -28,7 +28,7 @@ function Login(){
                 <input type="password" id = "password" name="password" placeholder="Password" className="border-solid border-2 border-gray-200 rounded-3xl w-80 h-10"></input>
                 
                 <div className="w-80 text-end">
-                <p className="font-semibold font-serif text-sm hover:underline-offset-1"><a href="">Forgot password?</a></p>
+                    <Link to="" className="hover:text-lime-900 font-semibold font-serif text-sm hover:underline-offset-1">Forgot password?</Link>
                 </div>
 
                 <Button text="Login"></Button>
@@ -37,7 +37,7 @@ function Login(){
 
             <hr className=" border-gray-300 dark:border-gray-600 my-10 w-80"></hr>
 
-            <p className="mt-4 font-serif">Don't have an account? <Link to="/create-account" className="underline-offset-1 text-lime-700 font-serif dark:text-lime-700">Create one now</Link></p>
+            <p className="mt-4 font-serif">Don't have an account? <Link to="/create-account" className="underline-offset-1 text-lime-700 font-serif dark:text-lime-700 hover:text-lime-900">Create one now</Link></p>
         </div>
 
         <div className="p-10">
