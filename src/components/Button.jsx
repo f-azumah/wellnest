@@ -1,11 +1,10 @@
 import "../styles/components.css"
 
-export default function Button({text = " ", className = "bg-lime-200 text-lg text-gray-600 mt-8 flex justify-center items-center font-sans" }){
+export default function Button({onClick, text = " ", className = " "}){
 
     return(
-        <button className={className}>
+        <button onClick={onClick} className={`text-lg flex justify-center items-center font-sans ${className}`}>
             {text}
         </button>
     )
-
 }

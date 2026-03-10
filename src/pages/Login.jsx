@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function MyComponent(){
     return (
-        <img src="../public/login.svg" alt="Girl holding flowers" className="w-100 h-auto border-dashed bg-lime-100 rounded-xl"></img>
+        <img src="../login.svg" alt="Girl holding flowers" className="w-100 h-auto border-dashed bg-lime-100 rounded-xl"></img>
     )
 
 }
@@ -16,7 +16,7 @@ function Login(){
     function handleSubmit(e) {
         e.preventDefault();
         console.log("form submitted");
-        navigate("/dashboard");
+        navigate("/break-it-down");
     }
 
     return(
@@ -31,7 +31,7 @@ function Login(){
                     <Link to="" className="hover:text-lime-900 font-semibold font-serif text-sm hover:underline-offset-1">Forgot password?</Link>
                 </div>
 
-                <Button text="Login"></Button>
+                <Button className="mt-8 w-[320px]" text="Login"></Button>
 
             </form>
 
