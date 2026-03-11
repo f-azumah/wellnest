@@ -13,8 +13,4 @@ button {
 button:hover {
   border-color: #242424;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto #242424;
-  
-}
+
