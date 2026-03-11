@@ -1,16 +1,34 @@
-# React + Vite
+WELLNEST 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## PROBLEM 
+Many people struggle with feeling overwhelmed by their thoughts and responsibilities. 
+Traditional productivity tools assume users already know how to organize their tasks, 
+which can make it harder for overwhelmed users to get started.
 
-Currently, two official plugins are available:
+This often leads to never starting or starting many things but rarely finishing them. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Goal
 
-## React Compiler
+Wellnest helps users turn scattered thoughts into clear tasks and guides them 
+through completing them one step at a time.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The goal is to reduce overwhelm and help users build momentum.
 
-## Expanding the ESLint configuration
+## Core Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Brain Dump
+Users can freely write whatever is on their mind.
+
+2. Task Extraction
+The app converts messy thoughts into actionable tasks.
+
+3. Focus Mode
+Users are guided through tasks one step at a time to reduce decision fatigue.
+
+## MVP Scope
+
+- Brain dump text input
+- Convert text into tasks
+- Display task list
+- Focus mode (one task at a time)
+- Progress indicator

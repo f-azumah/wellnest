@@ -3,7 +3,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 // import { createClient } from "@supabase/supabase-js";
 import Login from './pages/Login.jsx';
 import CreateAccount from './pages/CreateAccount.jsx';
-import BreakItDown from './pages/BreakItDown.jsx';
+import DisplayTasks from './pages/TaskList.jsx';
+import BrainDump from './pages/BrainDump.jsx';
 
 
 
@@ -13,7 +14,8 @@ function App() {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/create-account" element={<CreateAccount />} />
-      <Route path='/break-it-down' element={<BreakItDown />} />
+      <Route path="/brain-dump" element={<BrainDump />} />
+      <Route path="/task-list" element={<DisplayTasks />} />
     </Routes>
   );
 }

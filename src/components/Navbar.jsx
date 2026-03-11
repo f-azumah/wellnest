@@ -99,14 +99,14 @@ function JournalComponent(){
 function Menu() {
   return(
     <div className="flex gap-6 h-10 items-center">
-      <Link to="/dashboard" className="group hover:text-orange-400">
+      <Link to="/brain-dump" className="group hover:text-orange-400">
         <BrainDumpComp />
         <span className="absolute top-full mt-2 right-45 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
           Brain Dump
         </span>
       </Link>
       <div className="w-px bg-gray-400 h-10"></div>
-      <Link to="" className="group hover:text-orange-400">
+      <Link to="/task-list" className="group hover:text-orange-400">
         <BIDComponent />
         <span className="absolute top-full mt-2 right-20 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
           Break It Down
@@ -115,8 +115,8 @@ function Menu() {
       <div className="w-px bg-gray-400 h-10"></div>
       <Link to="" className="group hover:text-orange-400">
         <Top3Component />
-        <span className="absolute top-full mt-2 right-4 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-          Daily Top 3
+        <span className="absolute top-full mt-2 right-2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+          Focus Mode
         </span>
       </Link>
       <div className="w-px bg-gray-400 h-10"></div>

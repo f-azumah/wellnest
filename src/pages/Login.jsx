@@ -16,7 +16,7 @@ function Login(){
     function handleSubmit(e) {
         e.preventDefault();
         console.log("form submitted");
-        navigate("/break-it-down");
+        navigate("/brain-dump");
     }
 
     return(
