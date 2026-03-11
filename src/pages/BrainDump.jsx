@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button"
-import setTasks from "../utils/taskManager";
+import { setTasks, createTask } from "../utils/taskManager";
 
 const autoResize = (e) => {
     e.target.style.height = "auto";
@@ -28,16 +28,11 @@ function BrainDump(){
             if(!input.trim()) return;
 
             // if there's input run it through parseText
-            const parsed = parseText(input)
-    
-            // create a new task object which has a unique id, the user's input and subtasks from parseText output
-            const newTask = {
-                id: crypto.randomUUID(),
-                originalText: input,
-                subtasks: parsed
-            };
+            const parsed = parseText(input);
+            //create new task
+            const newTask = createTask(parsed);
             // update tasks array
-            setTasks(newTask)
+            setTasks(newTask);
 
             // navigate to tasklist.jsx
             navigate("/task-list");
@@ -46,9 +41,9 @@ function BrainDump(){
     return(
         <>
             <Navbar />
-            <h1 className="font-heading text-3xl mb-10 font-bold text-gray-800">Good evening, Fiona</h1>
-            <h2 className="font-heading font-bold text-xl text-gray-800">Let's unload your thoughts</h2>
-            <div className="flex flex-col h-[350px] mt-5 justify-center">
+            <h1 className="font-heading text-3xl mb-5 font-bold text-gray-800 fade-in">Good evening, Fiona</h1>
+            <h2 className="font-heading font-bold text-2xl text-gray-800 fade-in" style={{animationDelay:"0.1s"}}>Let's unload your thoughts</h2>
+            <div className="flex flex-col h-[350px] justify-center fade-out" style={{animationDelay : "0.3s"}}>
                 <div className="flex flex-col items-start border-solid border-1 border-neutral-300 rounded-3xl bg-white/65 shadow-md">
                     <h2 className="mt-10 font-heading underline pl-10 font-semibold text-gray-800">BRAIN DUMP</h2>
                     <textarea  
@@ -59,7 +54,7 @@ function BrainDump(){
                         value={input}
                         onChange={e => setInput(e.target.value)}
                         onInput={autoResize} 
-                        className="w-3xl h-auto text-gray-800 ">
+                        className="w-3xl h-auto text-gray-800">
 
                     </textarea>
                     <div className="flex mb-5 w-full justify-end-safe">
