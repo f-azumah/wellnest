@@ -9,7 +9,7 @@ function BrainDumpComp() {
       width="48px" 
       height="48px" 
       viewBox="0 0 48 48" 
-      className="fill-current text-gray-800 hover:text-orange-400 transition-colors cursor-pointer"
+      className="fill-current text-gray-800 hover:text-indigo-700 transition-colors cursor-pointer"
     >
       <g id="surface1">
         <path 
@@ -28,7 +28,7 @@ function BIDComponent(){
       width="32px" 
       height="32px" 
       viewBox="0 0 32 32" 
-      className="fill-current text-gray-800 hover:text-orange-400 transition-colors cursor-pointer"
+      className="fill-current text-gray-800 hover:text-indigo-700 transition-colors cursor-pointer"
     >
       <g id="surface1">
         <path 
@@ -48,7 +48,7 @@ function Top3Component() {
       width="32px" 
       height="32px" 
       viewBox="0 0 32 32" 
-      className="fill-current text-gray-800 hover:text-orange-400 transition-colors cursor-pointer"
+      className="fill-current text-gray-800 hover:text-indigo-700 transition-colors cursor-pointer"
     >
       <g id="surface1">
         <path 
@@ -75,7 +75,7 @@ function JournalComponent(){
      width="32px" 
      height="32px" 
      viewBox="0 0 32 32" 
-     className="fill-current text-gray-800 hover:text-orange-400 transition-colors cursor-pointer"
+     className="fill-current text-gray-800 hover:text-indigo-700 transition-colors cursor-pointer"
     >
       <g id="surface1">
         <path 
@@ -99,28 +99,28 @@ function JournalComponent(){
 function Menu() {
   return(
     <div className="flex gap-6 h-10 items-center">
-      <Link to="/brain-dump" className="group hover:text-orange-400">
+      <Link to="/brain-dump" className="group hover:text-indigo-700">
         <BrainDumpComp />
         <span className="absolute top-full mt-2 right-45 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
           Brain Dump
         </span>
       </Link>
       <div className="w-px bg-gray-400 h-10"></div>
-      <Link to="/task-list" className="group hover:text-orange-400">
+      <Link to="/task-list" className="group hover:text-indigo-700">
         <BIDComponent />
         <span className="absolute top-full mt-2 right-20 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
           Break It Down
         </span>
       </Link>
       <div className="w-px bg-gray-400 h-10"></div>
-      <Link to="" className="group hover:text-orange-400">
+      <Link to="" className="group hover:text-indigo-700">
         <Top3Component />
         <span className="absolute top-full mt-2 right-2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
           Focus Mode
         </span>
       </Link>
       <div className="w-px bg-gray-400 h-10"></div>
-      <Link to="" className="group hover:text-orange-400">
+      <Link to="" className="group hover:text-indigo-700">
         <JournalComponent />
         <span className="absolute top-full mt-2 left-68 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
           Journal
@@ -139,7 +139,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-screen bg-white dark:text-gray-800 p-4 flex justify-between items-center shadow-md z-50">
+    <nav className="fixed top-0 left-0 w-screen bg-slate-50 dark:text-gray-800 p-4 flex justify-between items-center h-14 shadow-md z-50">
       <h1 className="font-bold font-heading text-xl">WellNest</h1>
       <div className="relative flex gap-4 items-center">
         <div className={`flex absolute right-15 gap-6 top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out ${open ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 pointer-events-none'}`}>

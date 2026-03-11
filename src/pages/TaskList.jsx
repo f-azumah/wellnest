@@ -1,19 +1,17 @@
-import { useState } from "react";
+import getTasks from "../utils/taskManager"
 import Navbar from "../components/Navbar";
 
 
 function DisplayTasks(){
-    const [tasks] = useState(() => {
-        const saved = localStorage.getItem("wellnest_tasks");
-        return saved ? JSON.parse(saved) : [];
-    });
+    const tasks = getTasks();
+
     return(
         <>
             <Navbar />
+            <h1 className="font-heading font-bold text-3xl text-gray-800 mb-15">Let's Break it Down</h1>
             <div>
-                <h2 className="font-heading font-bold text-2xl mb-15">Let's Break it Down</h2>
                 <div className="flex justify-between items-end">
-                    <div className="flex flex-col w-[475px] h-[500px] justify-between">
+                    <div className="flex flex-col w-[475px] h-auto justify-between">
                         <div className="border-solid border-1 border-neutral-300 rounded-3xl bg-white/65 shadow-md h-96 overflow-y-auto p-4">
                             <h3 className="font-heading dark:text-gray-800 mb-3">Tasks</h3>
 

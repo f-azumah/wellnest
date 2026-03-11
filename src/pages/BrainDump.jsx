@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button"
+import setTasks from "../utils/taskManager";
 
 const autoResize = (e) => {
     e.target.style.height = "auto";
@@ -35,10 +36,9 @@ function BrainDump(){
                 originalText: input,
                 subtasks: parsed
             };
-            // grab whatever is in the local storage and save it in existing if theres nothing fall back to empty array
-            const existing = JSON.parse(localStorage.getItem("wellnest_tasks") || "[]");
-            // add the new task into the existsing array and save it in local storage
-            localStorage.setItem("wellnest_tasks", JSON.stringify([...existing, newTask]));
+            // update tasks array
+            setTasks(newTask)
+
             // navigate to tasklist.jsx
             navigate("/task-list");
         };
@@ -46,25 +46,26 @@ function BrainDump(){
     return(
         <>
             <Navbar />
-            <div className="flex flex-col h-[450px] mt-25 justify-center">
-                <h1 className="font-heading text-3xl font-bold mb-12">Time to offload</h1>
+            <h1 className="font-heading text-3xl mb-10 font-bold text-gray-800">Good evening, Fiona</h1>
+            <h2 className="font-heading font-bold text-xl text-gray-800">Let's unload your thoughts</h2>
+            <div className="flex flex-col h-[350px] mt-5 justify-center">
                 <div className="flex flex-col items-start border-solid border-1 border-neutral-300 rounded-3xl bg-white/65 shadow-md">
-                    <h2 className="mt-10 font-heading underline pl-10 font-semibold dark:text-gray-800">BRAIN DUMP</h2>
+                    <h2 className="mt-10 font-heading underline pl-10 font-semibold text-gray-800">BRAIN DUMP</h2>
                     <textarea  
                         type="text" 
                         id = "braindump" 
                         name="braindump" 
-                        placeholder="Everything in your head, no sorting yet..." 
+                        placeholder="Dump everything here..." 
                         value={input}
                         onChange={e => setInput(e.target.value)}
                         onInput={autoResize} 
-                        className="w-5xl h-auto dark:text-white ">
+                        className="w-3xl h-auto text-gray-800 ">
 
                     </textarea>
                     <div className="flex mb-5 w-full justify-end-safe">
                         <Button 
                             onClick={onButtonClick} 
-                            className = "bg-lime-200 text-gray-600 mr-8" 
+                            className = "bg-indigo-300 text-white mr-8 hover:bg-indigo-400" 
                             text="Break It Down"
                         />
                     </div>

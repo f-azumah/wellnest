@@ -65,6 +65,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 a {
@@ -78,10 +79,11 @@ a {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: url('/src/assets/bg.svg') no-repeat center / cover;
+  background: #F8FAFC;
 }
 
 h1 {
