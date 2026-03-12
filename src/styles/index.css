@@ -28,6 +28,7 @@
 
   /* Animations */
   --fade-out: fadeOutVertical 1.5s ease-in-out forwards;
+
 }
 
 @keyframes fadeOutVertical {
@@ -107,6 +108,7 @@ input{
 }
 
 input:focus{
+  outline-width: 1px;
   outline-color: #242424;
 }
 
@@ -131,6 +133,6 @@ textarea:focus{
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: #213547;
   }
 }
