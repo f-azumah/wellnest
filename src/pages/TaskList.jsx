@@ -22,7 +22,7 @@ function DisplayTasks(){
         <>
                 <Navbar />
                 <div className="absolute top-[72px] right-4">
-                    <DisplayDate text={displayDate()} />
+                    <DisplayDate className="fade-in" text={displayDate()} />
                 </div>
                 <h1 className="font-heading font-bold text-3xl text-gray-800 mb-5">Let's Break it Down</h1>
                 <h2 className="font-heading font-bold text-2xl text-gray-800 mb-15">Today's Focus :</h2>
@@ -32,12 +32,18 @@ function DisplayTasks(){
                         <p className="text-gray-400 text-sm">No tasks for today. Go do a <Link to="/brain-dump" className="underline-offset-1 text-indigo-300 hover:text-indigo-400">brain dump</Link> first!<br /> or <br /> <Link to="/prev-task-list" className="underline-offset-1 text-indigo-300 hover:text-indigo-400">Continue yesterday's tasks</Link></p>
                     ) : (
                         latestTask.subtasks.map((subtask, index) => (
-                            <div
-                                key={`${latestTask.id}-${index}`}
-                                className="border-b border-neutral-200 py-2 text-gray-700"
-                            >
-                            {subtask}
-                            </div>
+                            <>
+                                <div
+                                    key={`${latestTask.id}-${index}`}
+                                    className="flex justify-center mt-1 text-gray-700"
+                                >
+                                    <div className="w-24">
+                                        <span className="material-symbols-outlined cursor-pointer font-medium">radio_button_unchecked</span>
+                                    </div>
+                                    {subtask.content}
+                                </div>
+                                <div className="border-b border-neutral-200 my-1"></div>
+                            </>
                             ))
                         )
                     }

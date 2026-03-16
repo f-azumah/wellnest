@@ -49,11 +49,16 @@ function getPrevDate(){
 
 // create a new task object which has a unique id, the date of input and subtasks from parseText output
 function createTask(parsed){
+    const subtasks = parsed.map((task) => {
+        return {
+            content : task ,
+            completed : false
+        }
+    })
     return {
         id : crypto.randomUUID(),
         dateCreated : formatDate(),
-        subtasks : parsed,
-        completed : false
+        subtasks : subtasks
     };
 }
 

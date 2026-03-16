@@ -1,5 +1,5 @@
-export default function DisplayDate({className="text-gray-800 font-medium font-body fade-in", text = " "}){
+export default function DisplayDate({className=" ", text = " "}){
     return(
-        <p className={className}>{text}</p>
+        <p className={`text-gray-800 font-medium font-body ${className}`}>{text}</p>
     )
 }
