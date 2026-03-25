@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button"
 import { setTasks, createTask } from "../utils/taskManager";
@@ -17,31 +18,62 @@ function parseText(text){
         .filter(t => t.length > 0);
 }
 
+function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+}
+
+
 function BrainDump(){
     const [input, setInput] = useState("")
+    const [name, setName] = useState("")
     const navigate = useNavigate();
+
+    useEffect(() => {
+        async function getUser(){
+            const { data, error } = await supabase.auth.getUser();
+
+            if (error) {
+                console.error(error.message);
+                return;
+            }
+
+            // if (!data?.user) {
+            //     navigate("/login");
+            //     return;
+            // }
+
+            if (data?.user){
+                setName(data.user.user_metadata.name);
+            }
+        }
+
+        getUser();
+    }, []);
     
         // once button is clicked:
-        const onButtonClick = () => {
-            console.log("button clicked");
-            // if there's no input after trimming return
-            if(!input.trim()) return;
+    const onButtonClick = () => {
+        console.log("button clicked");
+        // if there's no input after trimming return
+        if(!input.trim()) return;
 
-            // if there's input run it through parseText
-            const parsed = parseText(input);
-            //create new task
-            const newTask = createTask(parsed);
-            // update tasks array
-            setTasks(newTask);
+        // if there's input run it through parseText
+        const parsed = parseText(input);
+        //create new task
+        const newTask = createTask(parsed);
+        // update tasks array
+        setTasks(newTask);
 
-            // navigate to tasklist.jsx
-            navigate("/task-list");
-        };
+        // navigate to tasklist.jsx
+        navigate("/task-list");
+    };
 
     return(
         <>
             <Navbar />
-            <h1 className="font-heading text-3xl mb-5 font-bold text-gray-800 fade-in">Good evening, Fiona</h1>
+            <h1 className="font-heading text-3xl mb-5 font-bold text-gray-800 fade-in">{getGreeting()}, {name}</h1>
             <h2 className="font-heading font-bold text-2xl text-gray-800 fade-in" style={{animationDelay:"0.1s"}}>Let's unload your thoughts</h2>
             <div className="flex flex-col h-[350px] justify-center fade-out" style={{animationDelay : "0.3s"}}>
                 <div className="flex flex-col items-start border-solid border-1 border-neutral-300 rounded-3xl bg-white/65 shadow-md">

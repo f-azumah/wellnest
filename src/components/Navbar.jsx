@@ -113,7 +113,7 @@ function Menu() {
         </span>
       </Link>
       <div className="w-px bg-gray-400 h-10"></div>
-      <Link to="" className="group hover:text-indigo-700">
+      <Link to="/focus" className="group hover:text-indigo-700">
         <Top3Component />
         <span className="absolute top-full mt-2 right-2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
           Focus Mode
