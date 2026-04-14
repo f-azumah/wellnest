@@ -1,29 +1,14 @@
-function getTasks(){
-    const saved = localStorage.getItem("wellnest_tasks");
-    return saved ? JSON.parse(saved) : []; 
-}
-
-function setTasks(task){
-    // grab whatever is in the local storage and save it in existing if theres nothing fall back to empty array
-    const existing = JSON.parse(localStorage.getItem("wellnest_tasks") || "[]");
-    // add the new task into the existsing array and save it in local storage
-    localStorage.setItem("wellnest_tasks", JSON.stringify([...existing, task]));
-}
-
-function getLatestTask(tasks){
-    if(!tasks.length) return null;
-    return tasks[tasks.length - 1];
-}
+import { supabase } from "../lib/supabase";
 
 function formatDate(){
     const date = new Date();
 
-    // Format as "DD-MM-YYYY"
+    // Format as "YYYY-MM-DD"
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
     const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
+    return `${year}-${month}-${day}`;
 
 }
 
@@ -43,35 +28,101 @@ function getPrevDate(){
     const month = String(yesterday.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
     const year = yesterday.getFullYear();
 
-    return `${day}-${month}-${year}`;
+    return `${year}-${month}-${day}`;
     
 }
 
-// create a new task object which has a unique id, the date of input and subtasks from parseText output
-function createTask(parsed){
-    const subtasks = parsed.map((task) => {
-        return {
-            content : task ,
-            completed : false
-        }
-    })
-    return {
-        id : crypto.randomUUID(),
-        dateCreated : formatDate(),
-        subtasks : subtasks
-    };
+// called when user clicks 'brain dump' button. 
+// saves data
+async function createActionPlan(tasks) {
+    const {data: userData} = await supabase.auth.getUser();
+    const userID = userData.user.id;
+    const {data, error} = await supabase
+        .from('action_plans')
+        .insert({date_created: formatDate(), user_id: userID})
+        .select('plan_id')
+    
+    if (error) {
+        console.error(error.message);
+        return;
+    }
+
+    
+    const planID = data[0].plan_id
+    const taskObjects = tasks.map((task => ({
+    plan_id : planID,
+    task_name : task,
+    is_complete : false})
+    ))
+    const {error: taskError} = await supabase
+        .from('tasks')
+        .insert(taskObjects)
+
+    if (taskError) {
+        console.error(taskError.message);
+        return;
+    }
 }
 
-function getTaskHistory(){
-    const tasks = getTasks();
-    return tasks.filter(task => task.dateCreated != formatDate());
+// fetch today's action plan and tasks 
+async function getTodayPlan() {
+    const {data, error} = await supabase
+        .from('action_plans')
+        .select(`*, tasks(*)`)
+        .eq('date_created', formatDate())
+
+    if(error){
+        console.error(error.message);
+        return;
+    }
+
+    return data[0];
+}
+
+// fetch yesterday's action plan and tasks
+async function getPreviousPlan() {
+    const {data, error} = await supabase
+        .from('action_plans')
+        .select(`*, tasks(*)`)
+        .eq('date_created', getPrevDate())
+
+    if(error){
+        console.error(error.message);
+        return;
+    }
+
+    return data[0];
+}
+
+// fetch all previous action plans and tasks 
+async function getTaskHistory() {
+    const {data, error} = await supabase
+        .from('action_plans')
+        .select(`*, tasks(*)`)
+        .neq('date_created', formatDate())
+
+    if(error){
+        console.error(error.message);
+        return;
+    }
+
+    return data;
+}
+
+async function updateTask(taskID, updates) {
+    const {error} = await supabase
+        .from('tasks')
+        .update(updates)
+        .eq('task_id', taskID)
+
+    if (error){
+        console.error(error.message);
+        return;
+    }
 }
 
 
-function getPreviousTask(){
-    const tasks = getTasks();
-    return tasks.filter(task => task.dateCreated == getPrevDate());
 
-}
+    
 
-export { getTasks, setTasks, getLatestTask, createTask, getTaskHistory, formatDate, displayDate, getPreviousTask };
+export {displayDate, createActionPlan, getTodayPlan, getPreviousPlan, getTaskHistory, updateTask}
