@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button"
-import { setTasks, createTask } from "../utils/taskManager";
+// import { setTasks, createTask } from "../utils/taskManager";
+import { createActionPlan } from "../utils/taskManager";
 
 const autoResize = (e) => {
     e.target.style.height = "auto";
@@ -54,17 +55,14 @@ function BrainDump(){
     }, []);
     
         // once button is clicked:
-    const onButtonClick = () => {
+    const onButtonClick = async() => { 
         console.log("button clicked");
         // if there's no input after trimming return
         if(!input.trim()) return;
 
         // if there's input run it through parseText
         const parsed = parseText(input);
-        //create new task
-        const newTask = createTask(parsed);
-        // update tasks array
-        setTasks(newTask);
+        await createActionPlan(parsed);
 
         // navigate to tasklist.jsx
         navigate("/task-list");

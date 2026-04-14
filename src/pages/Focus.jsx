@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { updateTask } from "../utils/taskManager";
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -58,16 +59,15 @@ function Focus(){
 
     const noTask = !location.state?.task;
 
-    const finishEarly = () => {
+    const finishEarly = async() => {
         clearInterval(intervalRef.current);
         if(noTask){
             navigate("/task-list");
             return;
         }
-        const prevCompleted = location.state?.completedIndexes || [];
-        navigate("/task-list", {
-            state: { completedIndexes: [...prevCompleted, location.state?.index] } });
-    };
+        await updateTask(location.state.taskID, {is_complete: true})
+        navigate("/task-list");
+    }
 
     return(
         <div className="flex flex-col items-center justify-center min-h-screen gap-8">
