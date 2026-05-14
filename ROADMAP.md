@@ -4,12 +4,9 @@ Wellnest helps users turn scattered thoughts into a clear plan and work through 
 
 ## Current focus
 
-**M1 — AI Brain Dump Parsing.** Replacing the regex parser in `BrainDump.jsx` with a Supabase Edge Function that calls Claude Haiku to extract, decompose, and prioritize tasks. Echo function works locally; Claude call works locally; deployment + frontend wiring still to do.
+**M1.5 — Design system + styling pass.** Before adding any more UI work (M2-M4 are all UI-heavy), define a minimal design foundation: tokens, primitives, and apply to three main pages. Starts with two non-code decisions: raw Tailwind + tokens vs. component library, and locking in a reference aesthetic.
 
 ## Milestones
-
-### M1 — AI Brain Dump Parsing (in progress)
-Deploy the Edge Function to Supabase cloud, wire `BrainDump.jsx` to call it, update `createActionPlan` to persist the richer task fields (priority, estimated_minutes, parent_task_id, sort_order), and harden the error paths.
 
 ### M1.5 — Design system + styling pass
 Define a small foundation before adding more UI in M2-M4: design tokens (color, spacing, typography), a handful of reusable primitives (Card, Heading, Button refinements), and apply to the three main pages (BrainDump, TaskList, Focus). Tightly scoped — if it expands beyond "tokens + primitives + 3 pages," pause and reassess. Reference images / target design should be locked in *before* starting code changes.
@@ -41,4 +38,19 @@ These are decisions deferred rather than ignored. Revisit each when relevant.
 
 ## Done
 
-(Move milestone summaries here as each completes.)
+### M1 — AI Brain Dump Parsing ✓
+Replaced the regex parser in `BrainDump.jsx` with a Supabase Edge Function that calls Claude Haiku to extract, decompose, and prioritize tasks from messy user input.
+
+Shipped:
+- `parse-braindump` Edge Function deployed to Supabase cloud, with date-aware system prompt and prefilled JSON output
+- `tasks` schema extended with `priority`, `estimated_minutes`, `parent_task_id`, `sort_order`
+- `BrainDump.jsx` invokes the function with loading and error states; auth handled automatically by the Supabase JS SDK
+- `createActionPlan` updated to persist hierarchical task structure (parents first, then children with resolved foreign keys)
+- `Button` component accepts a `disabled` prop
+- Tested with 6 varied brain dumps covering: pure venting, vague decomposition, deadline-based priority, pre-formatted lists, emotion + tasks, and dependencies. Prompt produces solid output; remaining gaps are display issues (M2) or planned features (M6).
+
+Known carry-overs into the backlog:
+- TaskList renders tasks flat; hierarchy display is M2 work
+- `getTodayPlan` returns `data[0]` with no ordering — latent bug if multiple plans exist per day
+- `action_plans` lacks a `created_at` timestamp; would help resolve the above
+- No `ON DELETE CASCADE` on `tasks.plan_id` — manual two-step deletes for now
