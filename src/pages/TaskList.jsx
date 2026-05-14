@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 import { displayDate, getTodayPlan, updateTask } from "../utils/taskManager";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
@@ -13,13 +14,21 @@ function DisplayTasks(){
 
     useEffect(() => {
         async function fetchPlan(){
+            const { data: { user } } = await supabase.auth.getUser();
+            console.log("Current auth user:", user?.id);
             const data = await getTodayPlan();
             setLoading(false);
             if(data){
                 setTodayPlan(data)
-            }          
+            } 
+                
+            const { data: allPlans, error: allError } = await supabase
+                .from('action_plans')
+                .select('*');
+            console.log("All visible plans:", allPlans, "error:", allError);
         }
         fetchPlan();
+
     }, []);
 
     const handleCheck = async(subtask) => {

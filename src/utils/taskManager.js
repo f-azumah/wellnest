@@ -47,7 +47,7 @@ async function createActionPlan(tasks) {
         throw planError;
     }
     
-    const planID = data[0].plan_id
+    const planID = planData[0].plan_id
     //Insert parents first (tasks with parent_index === null)
     // Track AI iarray index -> real task_id so we can resolve children later
     const indexToTaskId = new Map();
@@ -66,29 +66,29 @@ async function createActionPlan(tasks) {
             sort_order: t.sort_order ?? 0,
             parent_task_id: null,
         }));
-    }
 
-    const { data: insertedParents, error: parentError } = await supabase
+        const { data: insertedParents, error: parentError } = await supabase
         .from('tasks')
         .insert(parentRows)
         .select('task_id')
 
-    if (parentError) {
-        console.error(parentError.message);
-        throw parentError;
-    }
+        if (parentError) {
+            console.error(parentError.message);
+            throw parentError;
+        }
 
-    // Map original AI indices to the new real ID's 
-    parents.forEach((p, i) => {
-        indexToTaskId.set(p.originalIndex, insertedParents[i].task_id);
-    });
+         // Map original AI indices to the new real ID's 
+        parents.forEach((p, i) => {
+            indexToTaskId.set(p.originalIndex, insertedParents[i].task_id);
+        });
+    }
 
     const children = tasks
         .map((t, i) => ({ ...t, originalIndex: i}))
-        .filter(t => t.parent_index !== null || t.parent_index !== undefined);
+        .filter(t => t.parent_index !== null && t.parent_index !== undefined);
 
     if (children.length > 0) {
-        const childRows = chidlren.map(t => ({
+        const childRows = children.map(t => ({
             plan_id: planID, 
             task_name: t.task_name,
             is_complete: false,
@@ -97,15 +97,15 @@ async function createActionPlan(tasks) {
             sort_order: t.sort_order ?? 0,
             parent_task_id: indexToTaskId.get(t.parent_index) ?? null,
         }));
-    }
 
-    const { error: childError } = await supabase
+        const { error: childError } = await supabase
         .from('tasks')
         .insert(childRows)
 
-    if (childError) {
-        console.error(childError.message);
-        throw childError;
+        if (childError) {
+            console.error(childError.message);
+            throw childError;
+        }
     }
 }
 

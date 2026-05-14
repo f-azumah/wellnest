@@ -11,13 +11,13 @@ const autoResize = (e) => {
     e.target.style.height = e.target.scrollHeight + "px";
 };
 
-//function to parse text
-function parseText(text){
-    return text
-        .split(/[\n,;.]+|\band\b|\bthen\b|\bbut\b|\balso\b|\bor\b/)
-        .map(t => t.trim())
-        .filter(t => t.length > 0);
-}
+// //function to parse text
+// function parseText(text){
+//     return text
+//         .split(/[\n,;.]+|\band\b|\bthen\b|\bbut\b|\balso\b|\bor\b/)
+//         .map(t => t.trim())
+//         .filter(t => t.length > 0);
+// }
 
 function getGreeting() {
     const hour = new Date().getHours();
@@ -30,6 +30,8 @@ function getGreeting() {
 function BrainDump(){
     const [input, setInput] = useState("")
     const [name, setName] = useState("")
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -61,11 +63,33 @@ function BrainDump(){
         if(!input.trim()) return;
 
         // if there's input run it through parseText
-        const parsed = parseText(input);
-        await createActionPlan(parsed);
+        setLoading(true);
+        setError(null);
 
-        // navigate to tasklist.jsx
-        navigate("/task-list");
+        try{
+            const { data, error: fnError } = await supabase.functions.invoke(
+                "parse-braindump",
+                {body: {brainDump: input} }
+            );
+
+            if (fnError) throw fnError;
+            if (data?.error) throw new Error(data.error);
+            if (!Array.isArray(data?.tasks) || data.tasks.length === 0) {
+                throw new Error("No tasks were returned, Try rewording your brain dump");
+            }
+
+            await createActionPlan(data.tasks);
+            // navigate to tasklist.jsx
+            navigate("/task-list");
+        } catch (err){
+            console.error("Failed to parse brain dump: ", err);
+            setError(
+                err.message || 
+                "Something went wrong. Please try again in a moment."
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     return(
@@ -85,13 +109,16 @@ function BrainDump(){
                         onChange={e => setInput(e.target.value)}
                         onInput={autoResize} 
                         className="w-3xl h-auto text-gray-800">
-
                     </textarea>
+                    {error && ( 
+                        <p className="text-red-600 text-sm pl-10 mb-2">{error}</p>
+                    )}
                     <div className="flex mb-5 w-full justify-end-safe">
                         <Button 
                             onClick={onButtonClick} 
+                            disabled={loading || !input.trim()}
                             className = "bg-indigo-300 text-white mr-8 hover:bg-indigo-400" 
-                            text="Break It Down"
+                            text={loading ? "Thinking..." : "Break It Down"}
                         />
                     </div>
                 </div>

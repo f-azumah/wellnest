@@ -26,6 +26,9 @@ Add a `due_date` column. The AI already knows today's date (added in M1) so it c
 ### M5 — Ship readiness
 Re-enable the auth redirect in `BrainDump.jsx` (currently commented out). Lock CORS in the Edge Function to the real frontend domain. Add per-user rate limiting in the function so an abusive user can't burn through API budget. Surface AI errors gracefully in the UI. Set a spend cap on the Anthropic API key.
 
+### M6 — Interactive brain dump refinement
+When a task is vague (e.g., "work on dissertation"), the AI should ask clarifying questions instead of guessing at decomposition. Edge Function returns tasks plus optional `clarifying_questions` array. UI renders the questions inline, collects answers, makes a second call with original input + answers to produce refined tasks. Optionally persist the conversation alongside the action plan. Could meaningfully differentiate wellnest from generic task apps if executed well.
+
 ## Open questions
 
 These are decisions deferred rather than ignored. Revisit each when relevant.
