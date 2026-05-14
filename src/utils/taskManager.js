@@ -37,30 +37,75 @@ function getPrevDate(){
 async function createActionPlan(tasks) {
     const {data: userData} = await supabase.auth.getUser();
     const userID = userData.user.id;
-    const {data, error} = await supabase
+    const {data: planData, error: planError} = await supabase
         .from('action_plans')
         .insert({date_created: formatDate(), user_id: userID})
         .select('plan_id')
     
-    if (error) {
-        console.error(error.message);
-        return;
+    if (planError) {
+        console.error(planError.message);
+        throw planError;
     }
-
     
     const planID = data[0].plan_id
-    const taskObjects = tasks.map((task => ({
-    plan_id : planID,
-    task_name : task,
-    is_complete : false})
-    ))
-    const {error: taskError} = await supabase
-        .from('tasks')
-        .insert(taskObjects)
+    //Insert parents first (tasks with parent_index === null)
+    // Track AI iarray index -> real task_id so we can resolve children later
+    const indexToTaskId = new Map();
 
-    if (taskError) {
-        console.error(taskError.message);
-        return;
+    const parents = tasks
+        .map((t, i) => ({ ...t, originalIndex: i}))
+        .filter(t => t.parent_index === null || t.parent_index === undefined);
+
+    if (parents.length > 0) {
+        const parentRows = parents.map(t => ({
+            plan_id: planID, 
+            task_name: t.task_name,
+            is_complete: false,
+            priority: t.priority ?? 'medium',
+            estimated_minutes: t.estimated_minutes ?? null,
+            sort_order: t.sort_order ?? 0,
+            parent_task_id: null,
+        }));
+    }
+
+    const { data: insertedParents, error: parentError } = await supabase
+        .from('tasks')
+        .insert(parentRows)
+        .select('task_id')
+
+    if (parentError) {
+        console.error(parentError.message);
+        throw parentError;
+    }
+
+    // Map original AI indices to the new real ID's 
+    parents.forEach((p, i) => {
+        indexToTaskId.set(p.originalIndex, insertedParents[i].task_id);
+    });
+
+    const children = tasks
+        .map((t, i) => ({ ...t, originalIndex: i}))
+        .filter(t => t.parent_index !== null || t.parent_index !== undefined);
+
+    if (children.length > 0) {
+        const childRows = chidlren.map(t => ({
+            plan_id: planID, 
+            task_name: t.task_name,
+            is_complete: false,
+            priority: t.priority ?? 'medium',
+            estimated_minutes: t.estimated_minutes ?? null,
+            sort_order: t.sort_order ?? 0,
+            parent_task_id: indexToTaskId.get(t.parent_index) ?? null,
+        }));
+    }
+
+    const { error: childError } = await supabase
+        .from('tasks')
+        .insert(childRows)
+
+    if (childError) {
+        console.error(childError.message);
+        throw childError;
     }
 }
 

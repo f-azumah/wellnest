@@ -1,9 +1,9 @@
 import "../styles/components.css"
 
-export default function Button({onClick, text = " ", className = " "}){
+export default function Button({onClick, text = " ", className = " ", disabled = false}){
 
     return(
-        <button onClick={onClick} className={`text-lg flex justify-center items-center font-body ${className}`}>
+        <button onClick={onClick} disabled={disabled} className={`text-lg flex justify-center items-center font-body ${className}`}>
             {text}
         </button>
     )
